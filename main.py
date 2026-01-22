@@ -106,6 +106,7 @@ def game(scre):
     f1 = False
     line_dr = False
     running = True
+    b_wpns.append(spawn_wpn(wpn_m4a1_s, (300, 300)))
     while running:
         keys = pygame.key.get_pressed()
         for event in pygame.event.get():

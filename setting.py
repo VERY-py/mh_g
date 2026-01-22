@@ -1,6 +1,7 @@
 import math
 import random
 import pygame
+
 SCREEN_WIDTH = 1920
 SCREEN_HEIGHT = 1080
 PLAYER_SIZE = (51, 51)
@@ -155,6 +156,28 @@ def brs_wpn(pl_inv, act_slot, player):
             return b_wpns
     return 0
 
+def spawn_wpn(wpn, coord, angle=0):
+    rt_wpn = pygame.transform.rotate(wpn[0], angle)
+    wp = scale_surf(rt_wpn, 0.5)
+    return wpn, coord, wp
+
+async def cmd(player):
+    t = input()
+    tx = t.split(" ")
+    if tx[0] == "spawn":
+        if len(tx) == 4:
+            if tx[1] in wpn:
+                for wp in wpn:
+                    if tx[1] == wp[2]:
+                        spawn_wpn(wp, (tx[2], tx[3]))
+            else: print("Error: weapon not found")
+        else: print("Error: incorrect number of arguments")
+    elif tx[0] == "tp":
+        if len(tx) == 3:
+            player.x = tx[1]
+            player.y = tx[2]
+        else: print("Error: incorrect number of arguments")
+
 MAP = scale_surf(pygame.image.load(MAP_png), 1.5)
 KT_T = scale_surf(pygame.image.load(KT_T_png), 1.35)
 KT_Tr = scale_surf(pygame.image.load(KT_Tr_png), 1.35)
@@ -164,15 +187,15 @@ kursor = pygame.image.load(kursor_png)
 knife = pygame.image.load(knife_png)
 main_img = pygame.image.load(main_img_png)
 
-hrc_glock = [200, 20, 3, 9, 20, False]  # shot_time, bullet_speed, rasb, player_speed, mgz, aftmt
-hrc_svd = [700, 34, 0, 7, 5, False]
-hrc_ak = [150, 20, 5, 8, 30, True]
-hrc_m4a1_s = [120, 25, 2, 8, 20, True]
+hrc_glock = [200, 30, 3, 9, 20, False]  # shot_time, bullet_speed, rasb, player_speed, mgz, aftmt
+hrc_svd = [700, 40, 0, 7, 5, False]
+hrc_ak = [150, 30, 5, 8, 30, True]
+hrc_m4a1_s = [140, 30, 2, 8, 20, True]
 
 wpn_glock_is = [pygame.image.load("assets/glock41.png"), hrc_glock, "glock"]
 wpn_svd_is = [scale_surf(pygame.image.load("assets/svd.png"), 0.4), hrc_svd, "svd"]
 wpn_ak_is = [scale_surf(pygame.image.load("assets/ak-47.png"), 0.2), hrc_ak, "ak-47"]
-wpn_m4a1_s_is = [pygame.image.load("assets/m4a1-s.png"), hrc_m4a1_s, "m4a1-s"]
+wpn_m4a1_s_is = [scale_surf(pygame.image.load("assets/m4a1-s.png"), 0.4), hrc_m4a1_s, "m4a1-s"]
 
 wpn_glock = wpn_glock_is.copy()
 wpn_svd = wpn_svd_is.copy()
@@ -181,3 +204,5 @@ wpn_m4a1_s = wpn_m4a1_s_is.copy()
 
 os_wpn = [wpn_svd, wpn_ak, wpn_m4a1_s]
 vt_wpn = [wpn_glock]
+
+wpn = [wpn_ak, wpn_m4a1_s, wpn_svd, wpn_glock]
