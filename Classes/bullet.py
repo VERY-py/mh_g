@@ -4,7 +4,7 @@ class Bullet:
     def __init__(self, x, y, angle, speed, rasbr, is_knife):
         self.x = x
         self.y = y
-        self.R = random.randint(-rasbr, rasbr)
+        self.R = random.randint(-abs(rasbr), abs(rasbr))
         self.angle = angle
         self.speed = speed
         self.knf = 0
@@ -42,3 +42,4 @@ class Bullet:
         screen_pos = (int(self.x + camera.offset_x), int(self.y + camera.offset_y))
         if self.is_knife: pygame.draw.circle(surface, ORANGE, screen_pos, 30)
         else: pygame.draw.circle(surface, ORANGE, screen_pos, self.radius)
+
